@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expense-backend
+  namespace: expense
+  labels:    # These are Deployment labels
+    project: expense
+    enviroment: dev
+    module: backend
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels: # There labels are used to select the Pod and create replicas
+      project: expense
+      enviroment: dev
+      module: backend
+# This is Pod definition
+  template:
+    metadata:
+      labels: # These are Pod labels
+        project: expense
+        enviroment: dev
+        module: backend
+    spec:
+      containers:
+      - name: backend
+        image: ganeshguntamadugu/backend:{{ .Values.deployment.imageVersion}}
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "120Mi"
+          limits:
+            cpu: "150m"
+            memory: "160Mi"
+        envFrom:
+          - configMapRef:
+              name: expense-backend
