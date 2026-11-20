@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expense-mysql
+  namespace: expense
+  labels:    # These are ReplicaSet labels
+    project: expense
+    enviroment: dev
+    module: mysql
+spec:
+  replicas: {{ .Values.deployment.replicas}} # This is called as Placeholder
+  selector:
+    matchLabels: # There labels are used to select the Pod and create replicas
+      project: expense
+      enviroment: dev
+      module: mysql
+# This is Pod definition
+  template:
+    metadata:
+      labels: # These are Pod labels
+        project: expense
+        enviroment: dev
+        module: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: ganeshguntamadugu/mysql:{{ .Values.deployment.imageVersion }}
