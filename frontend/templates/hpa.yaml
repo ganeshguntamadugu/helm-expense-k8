@@ -1,0 +1,13 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: expense-frontend-hpa
+  namespace: expense
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: expense-frontend
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: {{ .Values.hpa.CPUUtilizationPercentage }}
